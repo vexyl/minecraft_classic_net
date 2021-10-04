@@ -52,6 +52,8 @@ void tcp_socket_connect(struct tcp_socket* sock, char* ip, short port)
 		exit(0);
 	}
 	
+	memset(&addr, 0, sizeof(struct sockaddr_in));
+	
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = inet_addr(ip);
 	addr.sin_port = htons(port);

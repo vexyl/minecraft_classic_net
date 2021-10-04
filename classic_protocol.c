@@ -177,9 +177,9 @@ void opcode_handle_spawn(struct stream_buffer* stream)
 	stream_read_uint8(stream, &packet.yaw);
 	stream_read_uint8(stream, &packet.pitch);
 	
-	packet.x = ntohs(packet.x) / 32;
-	packet.y = ntohs(packet.y) / 32;
-	packet.z = ntohs(packet.z) / 32;
+	packet.x = ntohs(packet.x);
+	packet.y = ntohs(packet.y);
+	packet.z = ntohs(packet.z);
 	
 	if (classic_on_spawn != NULL)
 		classic_on_spawn(&packet);
@@ -197,9 +197,9 @@ void opcode_handle_position_orientation(struct stream_buffer* stream)
 	stream_read_uint8(stream, &packet.yaw);
 	stream_read_uint8(stream, &packet.pitch);
 	
-	packet.x = ntohs(packet.x) / 32;
-	packet.y = ntohs(packet.y) / 32;
-	packet.z = ntohs(packet.z) / 32;
+	packet.x = ntohs(packet.x);
+	packet.y = ntohs(packet.y);
+	packet.z = ntohs(packet.z);
 	
 	if (classic_on_position_orientation != NULL)
 		classic_on_position_orientation(&packet);
@@ -217,9 +217,9 @@ void opcode_handle_position_orientation_update(struct stream_buffer* stream)
 	stream_read_uint8(stream, &packet.yaw);
 	stream_read_uint8(stream, &packet.pitch);
 
-	packet.dx = packet.dx / 32;
-	packet.dy = packet.dy / 32;
-	packet.dz = packet.dz / 32;
+	packet.dx = packet.dx;
+	packet.dy = packet.dy;
+	packet.dz = packet.dz;
 	
 	if (classic_on_position_orientation_update != NULL)
 		classic_on_position_orientation_update(&packet);
@@ -235,9 +235,9 @@ void opcode_handle_position_update(struct stream_buffer* stream)
 	stream_read_int8(stream, &packet.dy);
 	stream_read_int8(stream, &packet.dz);
 
-	packet.dx = packet.dx / 32;
-	packet.dy = packet.dy / 32;
-	packet.dz = packet.dz / 32;
+	packet.dx = packet.dx;
+	packet.dy = packet.dy;
+	packet.dz = packet.dz;
 	
 	if (classic_on_position_update != NULL)
 		classic_on_position_update(&packet);

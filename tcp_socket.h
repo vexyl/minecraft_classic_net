@@ -1,7 +1,7 @@
 #ifndef TCP_SOCKET_H
 #define TCP_SOCKET_H
 
-#define TCP_SOCKET_MAX_RECV_SIZE 4096
+#define TCP_SOCKET_MAX_RECV_SIZE 8192
 
 #include <stdlib.h>
 #include <stdint.h>
