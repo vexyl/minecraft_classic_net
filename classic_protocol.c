@@ -22,6 +22,10 @@ void (*classic_on_set_block)(void*);
 void (*classic_on_spawn)(void*);
 void (*classic_on_position_orientation)(void*);
 
+void (*classic_on_position_orientation_update)(void*);
+void (*classic_on_position_update)(void*);
+void (*classic_on_orientation_update)(void*);
+
 void classic_protocol_initialize(struct protocol* proto)
 {
 	proto->opcode_table[0x00] = opcode_table_entry_new(&opcode_handle_server_id, 131);
@@ -66,7 +70,7 @@ void opcode_handle_server_id(struct stream_buffer* stream)
 
 void opcode_handle_ping(struct stream_buffer* stream)
 {
-	printf("got ping");
+
 }
 
 void opcode_handle_level_init(struct stream_buffer* stream)
@@ -165,7 +169,7 @@ void opcode_handle_spawn(struct stream_buffer* stream)
 	struct spawn_packet packet;
 	
 	stream_read_uint8(stream, NULL); // skip opcode
-	stream_read_int8(stream, &packet.pid);
+	stream_read_uint8(stream, &packet.pid);
 	stream_read_string(stream, &packet.name, 64);
 	stream_read_int16(stream, &packet.x);
 	stream_read_int16(stream, &packet.y);
@@ -186,7 +190,7 @@ void opcode_handle_position_orientation(struct stream_buffer* stream)
 	struct position_orientation_packet packet;
 	
 	stream_read_uint8(stream, NULL); // skip opcode
-	stream_read_int8(stream, &packet.pid);
+	stream_read_uint8(stream, &packet.pid);
 	stream_read_int16(stream, &packet.x);
 	stream_read_int16(stream, &packet.y);
 	stream_read_int16(stream, &packet.z);
@@ -203,17 +207,53 @@ void opcode_handle_position_orientation(struct stream_buffer* stream)
 
 void opcode_handle_position_orientation_update(struct stream_buffer* stream)
 {
-	printf("got position_orientation_update\n");
+	struct position_orientation_update_packet packet;
+	
+	stream_read_uint8(stream, NULL); // skip opcode
+	stream_read_uint8(stream, &packet.pid);
+	stream_read_int8(stream, &packet.dx);
+	stream_read_int8(stream, &packet.dy);
+	stream_read_int8(stream, &packet.dz);
+	stream_read_uint8(stream, &packet.yaw);
+	stream_read_uint8(stream, &packet.pitch);
+
+	packet.dx = packet.dx / 32;
+	packet.dy = packet.dy / 32;
+	packet.dz = packet.dz / 32;
+	
+	if (classic_on_position_orientation_update != NULL)
+		classic_on_position_orientation_update(&packet);
 }
 
 void opcode_handle_position_update(struct stream_buffer* stream)
 {
-	printf("got position_update\n");
+	struct position_update_packet packet;
+	
+	stream_read_uint8(stream, NULL); // skip opcode
+	stream_read_uint8(stream, &packet.pid);
+	stream_read_int8(stream, &packet.dx);
+	stream_read_int8(stream, &packet.dy);
+	stream_read_int8(stream, &packet.dz);
+
+	packet.dx = packet.dx / 32;
+	packet.dy = packet.dy / 32;
+	packet.dz = packet.dz / 32;
+	
+	if (classic_on_position_update != NULL)
+		classic_on_position_update(&packet);
 }
 
 void opcode_handle_orientation_update(struct stream_buffer* stream)
 {
-	printf("got orientation_update\n");
+	struct orientation_update_packet packet;
+	
+	stream_read_uint8(stream, NULL); // skip opcode
+	stream_read_uint8(stream, &packet.pid);
+	stream_read_uint8(stream, &packet.yaw);
+	stream_read_uint8(stream, &packet.pitch);
+	
+	if (classic_on_orientation_update != NULL)
+		classic_on_orientation_update(&packet);
 }
 
 void opcode_handle_despawn(struct stream_buffer* stream)

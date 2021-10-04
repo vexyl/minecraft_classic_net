@@ -28,7 +28,7 @@ struct set_block_packet
 
 struct spawn_packet
 {
-	int8_t pid;
+	uint8_t pid;
 	char name[64];
 	int16_t x, y, z;
 	uint8_t yaw, pitch;
@@ -36,8 +36,24 @@ struct spawn_packet
 
 struct position_orientation_packet
 {
-	int8_t pid;
+	uint8_t pid;
 	int16_t x, y, z;
+	uint8_t yaw, pitch;
+};
+
+struct position_orientation_update_packet {
+	uint8_t pid;
+	int8_t dx, dy, dz;
+	uint8_t yaw, pitch;
+};
+
+struct position_update_packet {
+	uint8_t pid;
+	int8_t dx, dy, dz;
+};
+
+struct orientation_update_packet {
+	uint8_t pid;
 	uint8_t yaw, pitch;
 };
 
