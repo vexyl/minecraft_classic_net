@@ -26,7 +26,7 @@ void linked_list_initialize(struct linked_list* list, size_t size);
 void linked_list_add(struct linked_list* list, void* data);
 void linked_list_delete(struct linked_list* list, struct linked_list_node* node);
 
-void* linked_list_next(struct linked_list* list);
+struct linked_list_node* linked_list_next(struct linked_list* list);
 void linked_list_reset(struct linked_list* list);
 
 void linked_list_print(struct linked_list* list);

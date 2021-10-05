@@ -28,9 +28,9 @@ int net_protocol_handler_handle_opcode(struct net_protocol_handler* handler, str
 	assert(proto != NULL);
 	while (proto != NULL) {
 		result = protocol_handle(proto, sock, opcode);
-		if (result == 0)
+		if (result != -1)
 			break;
-		proto = (struct protocol*)linked_list_next(&handler->protocol_list);
+		proto = (struct protocol*)(linked_list_next(&handler->protocol_list)->data);
 	}
 	linked_list_reset(&handler->protocol_list);
 

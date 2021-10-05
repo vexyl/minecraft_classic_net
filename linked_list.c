@@ -72,16 +72,14 @@ void linked_list_delete(struct linked_list* list, struct linked_list_node* node)
 	}
 }
 
-void* linked_list_next(struct linked_list* list)
+struct linked_list_node* linked_list_next(struct linked_list* list)
 {
-	void* data = NULL;
-
 	if (list->current != NULL) {
-		data = list->current->data;
 		list->current = list->current->next;
+		return list->current;
 	}
 	
-	return data;
+	return NULL;
 }
 
 void linked_list_reset(struct linked_list* list)
