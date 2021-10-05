@@ -12,7 +12,7 @@
 
 extern void (*classic_on_set_block)(struct set_block_packet packet);
 
-void mytest(void* data)
+void mytest(struct set_block_packet packet)
 {
 	printf("mytest got a block type %d at %d, %d, %d\n", packet.block_type, packet.x, packet.y, packet.z);
 }
