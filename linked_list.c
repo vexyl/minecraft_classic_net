@@ -55,7 +55,7 @@ void linked_list_add(struct linked_list* list, void* data)
 void linked_list_delete(struct linked_list* list, struct linked_list_node* node)
 {
 	struct linked_list_node* current_node = list->head;
-	struct linked_list_node* previous_node = list->head;
+	struct linked_list_node* previous_node = NULL;
 	while (current_node != NULL) {
 			if (current_node == node) {
 				if (current_node == list->head)
