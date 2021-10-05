@@ -16,15 +16,14 @@ size_t map_buffer_size;
 uint8_t* map_buffer_compressed;
 size_t map_buffer_compressed_size;
 
-void (*classic_on_server_id)(void* packet);
-void (*classic_on_level_finalized)(void* packet);
-void (*classic_on_set_block)(void*);
-void (*classic_on_spawn)(void*);
-void (*classic_on_position_orientation)(void*);
-
-void (*classic_on_position_orientation_update)(void*);
-void (*classic_on_position_update)(void*);
-void (*classic_on_orientation_update)(void*);
+void (*classic_on_server_id)(struct server_id_packet packet);
+void (*classic_on_level_finalized)(struct level_finalized_packet packet);
+void (*classic_on_set_block)(struct set_block_packet packet);
+void (*classic_on_spawn)(struct spawn_packet packet);
+void (*classic_on_position_orientation)(struct position_orientation_packet);
+void (*classic_on_position_orientation_update)(struct position_orientation_update_packet);
+void (*classic_on_position_update)(struct position_update_packet);
+void (*classic_on_orientation_update)(struct orientation_update_packet);
 
 void classic_protocol_initialize(struct protocol* proto)
 {
@@ -65,7 +64,7 @@ void opcode_handle_server_id(struct stream_buffer* stream)
 	printf("protocol version: %d\nname: %s\nmotd: %s\nuser type: %d\n", packet.version, packet.server_name, packet.server_motd, packet.user_type);
 	
 	if (classic_on_server_id != NULL)
-		classic_on_server_id(&packet);
+		classic_on_server_id(packet);
 }
 
 void opcode_handle_ping(struct stream_buffer* stream)
@@ -143,7 +142,7 @@ void opcode_handle_level_final(struct stream_buffer* stream)
 	packet.z_size = z_size;
 	
 	if (classic_on_level_finalized != NULL)
-		classic_on_level_finalized(&packet);
+		classic_on_level_finalized(packet);
 }
 
 void opcode_handle_set_block(struct stream_buffer* stream)
@@ -161,7 +160,7 @@ void opcode_handle_set_block(struct stream_buffer* stream)
 	packet.z = ntohs(packet.z);
 
 	if (classic_on_set_block != NULL)
-		classic_on_set_block(&packet);
+		classic_on_set_block(packet);
 }
 
 void opcode_handle_spawn(struct stream_buffer* stream)
@@ -182,7 +181,7 @@ void opcode_handle_spawn(struct stream_buffer* stream)
 	packet.z = ntohs(packet.z);
 	
 	if (classic_on_spawn != NULL)
-		classic_on_spawn(&packet);
+		classic_on_spawn(packet);
 }
 
 void opcode_handle_position_orientation(struct stream_buffer* stream)
@@ -202,7 +201,7 @@ void opcode_handle_position_orientation(struct stream_buffer* stream)
 	packet.z = ntohs(packet.z);
 	
 	if (classic_on_position_orientation != NULL)
-		classic_on_position_orientation(&packet);
+		classic_on_position_orientation(packet);
 }
 
 void opcode_handle_position_orientation_update(struct stream_buffer* stream)
@@ -222,7 +221,7 @@ void opcode_handle_position_orientation_update(struct stream_buffer* stream)
 	packet.dz = packet.dz;
 	
 	if (classic_on_position_orientation_update != NULL)
-		classic_on_position_orientation_update(&packet);
+		classic_on_position_orientation_update(packet);
 }
 
 void opcode_handle_position_update(struct stream_buffer* stream)
@@ -240,7 +239,7 @@ void opcode_handle_position_update(struct stream_buffer* stream)
 	packet.dz = packet.dz;
 	
 	if (classic_on_position_update != NULL)
-		classic_on_position_update(&packet);
+		classic_on_position_update(packet);
 }
 
 void opcode_handle_orientation_update(struct stream_buffer* stream)
@@ -253,7 +252,7 @@ void opcode_handle_orientation_update(struct stream_buffer* stream)
 	stream_read_uint8(stream, &packet.pitch);
 	
 	if (classic_on_orientation_update != NULL)
-		classic_on_orientation_update(&packet);
+		classic_on_orientation_update(packet);
 }
 
 void opcode_handle_despawn(struct stream_buffer* stream)

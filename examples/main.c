@@ -10,7 +10,7 @@
 #include <string.h>
 #include <assert.h>
 
-extern void (*classic_on_set_block)(void*);
+extern void (*classic_on_set_block)(struct set_block_packet packet);
 
 void mytest(void* data)
 {
