@@ -75,8 +75,9 @@ void linked_list_delete(struct linked_list* list, struct linked_list_node* node)
 struct linked_list_node* linked_list_next(struct linked_list* list)
 {
 	if (list->current != NULL) {
+		struct linked_list_node* node = list->current;
 		list->current = list->current->next;
-		return list->current;
+		return node;
 	}
 	
 	return NULL;
