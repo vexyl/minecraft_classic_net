@@ -14,8 +14,7 @@ extern void (*classic_on_set_block)(struct set_block_packet packet);
 
 void mytest(void* data)
 {
-	struct set_block_packet* packet = (struct set_block_packet*)data;
-	printf("mytest got a block type %d at %d, %d, %d\n", packet->block_type, packet->x, packet->y, packet->z);
+	printf("mytest got a block type %d at %d, %d, %d\n", packet.block_type, packet.x, packet.y, packet.z);
 }
 
 int main(int argc, char* argv[])
