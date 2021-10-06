@@ -57,6 +57,10 @@ struct orientation_update_packet {
 	uint8_t yaw, pitch;
 };
 
+struct despawn_packet {
+	uint8_t pid;
+};
+
 void classic_protocol_initialize(struct protocol* proto);
 
 void opcode_handle_server_id(struct stream_buffer* stream);
