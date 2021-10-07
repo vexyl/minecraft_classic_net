@@ -3,6 +3,7 @@
 #include "../tcp_socket.h"
 #include "../net.h"
 #include "../classic_protocol.h"
+#include "../protocol.h" // for error codes
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -65,7 +66,7 @@ int main(int argc, char* argv[])
 		tcp_socket_poll(&sock);
 		
 		int result = net_protocol_handler_handle_opcode(&proto_handler, &sock);
-		if (result == -1) {
+		if (result == PROTOCOL_INVALID_OPCODE) {
 			uint8_t opcode = tcp_socket_peek_first_byte(&sock);
 			fprintf(stderr, "unhandled opcode: 0x%.2x\n", opcode);
 			exit(1);
