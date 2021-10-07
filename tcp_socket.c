@@ -1,4 +1,5 @@
 #include "tcp_socket.h"
+#include "stream_buffer.h"
 
 #ifdef _WIN32
 #pragma comment(lib, "Ws2_32.lib")
@@ -110,7 +111,15 @@ uint8_t tcp_socket_peek_first_byte(struct tcp_socket* sock)
 
 int tcp_socket_send(struct tcp_socket* sock, unsigned char* buffer, size_t size)
 {
+	assert(sock != NULL && buffer != NULL && size > 0);
+	
 	int result = send(sock->sockfd, buffer, size, 0);
 	assert(result == size);
 	return result;
+}
+
+int tcp_socket_send_stream(struct tcp_socket* sock, struct stream_buffer* stream)
+{
+	assert(stream != NULL);
+	return tcp_socket_send(sock, stream->buffer, stream->size);
 }

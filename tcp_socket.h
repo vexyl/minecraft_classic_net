@@ -7,6 +7,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+struct stream_buffer;
+
 struct tcp_socket {
 	int sockfd;
 	unsigned char buffer[TCP_SOCKET_MAX_RECV_SIZE];
@@ -24,5 +26,6 @@ bool tcp_socket_consume(struct tcp_socket* sock, unsigned char* buffer, size_t s
 uint8_t tcp_socket_peek_first_byte(struct tcp_socket* sock);
 
 int tcp_socket_send(struct tcp_socket* sock, unsigned char* buffer, size_t size);
+int tcp_socket_send_stream(struct tcp_socket* sock, struct stream_buffer* stream);
 
 #endif // TCP_SOCKET_H
