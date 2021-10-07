@@ -35,9 +35,9 @@ int net_protocol_handler_handle_opcode(struct net_protocol_handler* handler, str
 			
 		struct linked_list_node* node = linked_list_next(&handler->protocol_list);
 		if (node == NULL)
-			proto = NULL;
-		else
-			proto = (struct protocol*)node->data;
+			break;
+			
+		proto = (struct protocol*)node->data;
 	}
 	linked_list_reset(&handler->protocol_list);
 

@@ -25,6 +25,7 @@ void stream_read_uint32(struct stream_buffer* stream, uint32_t* out_data);
 void stream_read_uint16(struct stream_buffer* stream, uint16_t* out_data);
 void stream_read_uint8(struct stream_buffer* stream, uint8_t* out_data);
 void stream_read_string(struct stream_buffer* stream, char* out_data, size_t size);
+void stream_read_string64(struct stream_buffer* stream, char* out_data);
 
 void stream_write_int32(struct stream_buffer* stream, int32_t in_data);
 void stream_write_int16(struct stream_buffer* stream, int16_t in_data);
@@ -33,5 +34,6 @@ void stream_write_uint32(struct stream_buffer* stream, uint32_t in_data);
 void stream_write_uint16(struct stream_buffer* stream, uint16_t in_data);
 void stream_write_uint8(struct stream_buffer* stream, uint8_t in_data);
 void stream_write_string(struct stream_buffer* stream, char* in_data, size_t size);
+void stream_write_string64(struct stream_buffer* stream, char* in_data);
 
 #endif // STREAM_BUFFER_H_
