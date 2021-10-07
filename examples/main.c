@@ -10,11 +10,14 @@
 #include <string.h>
 #include <assert.h>
 
-extern void (*classic_on_set_block)(struct set_block_packet packet);
+extern void (*classic_on_message)(struct message_packet packet);
 
-void mytest(struct set_block_packet packet)
+void on_message(struct message_packet packet)
 {
-	printf("mytest got a block type %d at %d, %d, %d\n", packet.block_type, packet.x, packet.y, packet.z);
+	char message[65];
+	message[64] = '\0';
+	strncpy(message, packet.message, 64);
+	printf("[Message] %s\n", message);
 }
 
 int main(int argc, char* argv[])
@@ -39,7 +42,7 @@ int main(int argc, char* argv[])
 
 	net_protocol_handler_initialize(&proto_handler);
 
-	classic_on_set_block = &mytest;
+	classic_on_message = &on_message;
 	
 	tcp_socket_initialize(&sock);
 	tcp_socket_connect(&sock, ip, port);
@@ -50,8 +53,8 @@ int main(int argc, char* argv[])
 	stream_initialize(&stream, NULL, 0);
 	stream_write_uint8(&stream, 0x00);
 	stream_write_uint8(&stream, 0x07);
-	stream_write_string(&stream, name, sizeof(name));
-	stream_write_string(&stream, key, sizeof(key));
+	stream_write_string64(&stream, name);
+	stream_write_string64(&stream, key);
 	stream_write_uint8(&stream, 0x00);
 
 	tcp_socket_send(&sock, stream.buffer, stream.size);
