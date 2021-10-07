@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	stream_write_string64(&stream, key);
 	stream_write_uint8(&stream, 0x00);
 
-	tcp_socket_send(&sock, stream.buffer, stream.size);
+	tcp_socket_send_stream(&sock, &stream);
 	stream_free(&stream);
 	
 	bool running = true;
