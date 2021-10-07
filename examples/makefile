@@ -7,7 +7,7 @@ HEADERS = \
 
 TARGET = classic_test
 LIBS = -lz
-OPTS = -g -Wall -Wextra -Wfatal-errors -Wno-ignored-qualifiers
+OPTS = -g -Wall -Wextra --pedantic-errors -Wfatal-errors -Wno-ignored-qualifiers
 FLAGS = $(LIBS) $(OPTS)
 OUT = ./$(TARGET)
 DEBUG = ./debug/$(TARGET)

@@ -114,7 +114,8 @@ int tcp_socket_send(struct tcp_socket* sock, unsigned char* buffer, size_t size)
 	assert(sock != NULL && buffer != NULL && size > 0);
 	
 	int result = send(sock->sockfd, buffer, size, 0);
-	assert(result == size);
+	
+	assert(result == (int)size);
 	return result;
 }
 

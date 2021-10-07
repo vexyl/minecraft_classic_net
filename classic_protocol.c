@@ -127,7 +127,7 @@ void opcode_handle_level_final(struct stream_buffer* stream)
 	
 	decompress_buffer(map_buffer_compressed, &map_buffer, &map_buffer_size, x_size * y_size * z_size);
 	
-	printf("map buffer size: %d\n", map_buffer_size);
+	printf("map buffer size: %d\n", (int)map_buffer_size);
 	
 	free(map_buffer_compressed);
 	
@@ -171,7 +171,7 @@ void opcode_handle_spawn(struct stream_buffer* stream)
 	
 	stream_read_uint8(stream, NULL); // skip opcode
 	stream_read_uint8(stream, &packet.pid);
-	stream_read_string64(stream, &packet.name);
+	stream_read_string64(stream, (char*)&packet.name);
 	stream_read_int16(stream, &packet.x);
 	stream_read_int16(stream, &packet.y);
 	stream_read_int16(stream, &packet.z);
@@ -274,7 +274,7 @@ void opcode_handle_message(struct stream_buffer* stream)
 	
 	stream_read_uint8(stream, NULL); // skip opcode
 	stream_read_uint8(stream, &packet.type);
-	stream_read_string64(stream, &packet.message);
+	stream_read_string64(stream, (char*)&packet.message);
 	
 	if (classic_on_message != NULL)
 		classic_on_message(packet);

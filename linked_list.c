@@ -88,20 +88,6 @@ void linked_list_reset(struct linked_list* list)
 	list->current = list->head;
 }
 
-void linked_list_print(struct linked_list* list)
-{
-	struct linked_list_node* current_node = list->head;
-	while (current_node != NULL) {
-		for (int i = 0; i < list->size; ++i) {
-			uint8_t* value = ((uint8_t*)current_node->data + i);
-			printf("0x%x ", *value);
-		}
-		printf("\n");
-		current_node = current_node->next;
-	}
-	printf("\n");
-}
-
 void linked_list_free(struct linked_list* list)
 {
 	struct linked_list_node* current_node = list->head;
