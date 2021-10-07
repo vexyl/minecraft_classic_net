@@ -24,6 +24,7 @@ void (*classic_on_position_orientation)(struct position_orientation_packet);
 void (*classic_on_position_orientation_update)(struct position_orientation_update_packet);
 void (*classic_on_position_update)(struct position_update_packet);
 void (*classic_on_orientation_update)(struct orientation_update_packet);
+void (*classic_on_message)(struct message_packet);
 void (*classic_on_despawn)(struct despawn_packet);
 
 void classic_protocol_initialize(struct protocol* proto)
@@ -58,8 +59,8 @@ void opcode_handle_server_id(struct stream_buffer* stream)
 	
 	stream_read_uint8(stream, NULL); // skip opcode
 	stream_read_uint8(stream, &packet.version);
-	stream_read_string(stream, (char*)packet.server_name, 64);
-	stream_read_string(stream, (char*)packet.server_motd, 64);
+	stream_read_string64(stream, (char*)packet.server_name);
+	stream_read_string64(stream, (char*)packet.server_motd);
 	stream_read_uint8(stream, &packet.user_type);
 	
 	printf("protocol version: %d\nname: %s\nmotd: %s\nuser type: %d\n", packet.version, packet.server_name, packet.server_motd, packet.user_type);
@@ -170,7 +171,7 @@ void opcode_handle_spawn(struct stream_buffer* stream)
 	
 	stream_read_uint8(stream, NULL); // skip opcode
 	stream_read_uint8(stream, &packet.pid);
-	stream_read_string(stream, &packet.name, 64);
+	stream_read_string64(stream, &packet.name);
 	stream_read_int16(stream, &packet.x);
 	stream_read_int16(stream, &packet.y);
 	stream_read_int16(stream, &packet.z);
@@ -269,7 +270,14 @@ void opcode_handle_despawn(struct stream_buffer* stream)
 
 void opcode_handle_message(struct stream_buffer* stream)
 {
-	printf("got message\n");
+	struct message_packet packet;
+	
+	stream_read_uint8(stream, NULL); // skip opcode
+	stream_read_uint8(stream, &packet.type);
+	stream_read_string64(stream, &packet.message);
+	
+	if (classic_on_message != NULL)
+		classic_on_message(packet);
 }
 
 void opcode_handle_disconnect(struct stream_buffer* stream)

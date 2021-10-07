@@ -57,6 +57,11 @@ struct orientation_update_packet {
 	uint8_t yaw, pitch;
 };
 
+struct message_packet {
+	uint8_t type;
+	char message[64];
+};
+
 struct despawn_packet {
 	uint8_t pid;
 };
