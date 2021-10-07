@@ -23,14 +23,14 @@ void net_protocol_handler_free(struct net_protocol_handler* handler)
 int net_protocol_handler_handle_opcode(struct net_protocol_handler* handler, struct tcp_socket* sock)
 {
 	if (handler->protocol_list.head == NULL)
-		return -1;
+		return PROTOCOL_INVALID_OPCODE;
 		
-	int result = 0;
+	int result = PROTOCOL_SUCCESS;
 	uint8_t opcode = tcp_socket_peek_first_byte(sock);
 	struct protocol* proto = (struct protocol*)(linked_list_next(&handler->protocol_list)->data);
 	while (proto != NULL) {
 		result = protocol_handle(proto, sock, opcode);
-		if (result != -1)
+		if (result != PROTOCOL_INVALID_OPCODE)
 			break;
 			
 		struct linked_list_node* node = linked_list_next(&handler->protocol_list);

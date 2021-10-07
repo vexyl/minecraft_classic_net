@@ -9,6 +9,12 @@
 struct stream_buffer;
 struct tcp_socket;
 
+enum PROTOCOL_ERRORS {
+	PROTOCOL_INVALID_OPCODE = -1,
+	PROTOCOL_PARTIAL_PACKET = 0,
+	PROTOCOL_SUCCESS = 1
+};
+
 struct opcode_table_entry {
 	void (*handler_func)(struct stream_buffer*);
 	size_t packet_size;

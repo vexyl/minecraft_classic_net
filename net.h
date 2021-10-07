@@ -5,6 +5,12 @@
 
 struct tcp_socket;
 
+enum NET_ERRORS {
+	NET_INVALID_OPCODE = -1,
+	NET_PARTIAL_PACKET = 0,
+	NET_SUCCESS = 1
+};
+
 struct net_protocol_handler {
 	struct linked_list protocol_list;
 };

@@ -19,9 +19,9 @@ void protocol_initialize(struct protocol* proto)
 int protocol_handle(struct protocol* proto, struct tcp_socket* sock, uint8_t opcode)
 {
 	if (proto->opcode_table[opcode].handler_func == NULL)
-		return -1;
+		return PROTOCOL_INVALID_OPCODE;
 		
-	int result = 0;
+	int result = PROTOCOL_SUCCESS;
 	size_t packet_size = proto->opcode_table[opcode].packet_size;
 	struct stream_buffer stream;
 
@@ -30,7 +30,7 @@ int protocol_handle(struct protocol* proto, struct tcp_socket* sock, uint8_t opc
 	if (tcp_socket_consume(sock, stream.buffer, packet_size))
 		proto->opcode_table[opcode].handler_func(&stream);
 	else
-		result = 1;
+		result = PROTOCOL_PARTIAL_PACKET;
 		
 	stream_free(&stream);
 	return result;
