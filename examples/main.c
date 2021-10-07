@@ -12,6 +12,7 @@
 #include <assert.h>
 
 extern void (*classic_on_message)(struct message_packet packet);
+extern void (*classic_on_disconnect)(struct disconnect_packet packet);
 
 void on_message(struct message_packet packet)
 {
@@ -19,6 +20,15 @@ void on_message(struct message_packet packet)
 	message[64] = '\0';
 	strncpy(message, packet.message, 64);
 	printf("[Message] %s\n", message);
+}
+
+void on_disconnect(struct disconnect_packet packet)
+{
+	char reason[65];
+	reason[64] = '\0';
+	strncpy(reason, packet.reason, 64);
+	printf("Kicked: %s\n", reason);
+	exit(0);
 }
 
 int main(int argc, char* argv[])
@@ -44,6 +54,7 @@ int main(int argc, char* argv[])
 	net_protocol_handler_initialize(&proto_handler);
 
 	classic_on_message = &on_message;
+	classic_on_disconnect = &on_disconnect;
 	
 	tcp_socket_initialize(&sock);
 	tcp_socket_connect(&sock, ip, port);

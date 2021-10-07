@@ -66,6 +66,10 @@ struct despawn_packet {
 	uint8_t pid;
 };
 
+struct disconnect_packet {
+	char reason[64];
+};
+
 void classic_protocol_initialize(struct protocol* proto);
 
 void opcode_handle_server_id(struct stream_buffer* stream);

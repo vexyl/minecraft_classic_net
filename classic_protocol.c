@@ -24,8 +24,9 @@ void (*classic_on_position_orientation)(struct position_orientation_packet);
 void (*classic_on_position_orientation_update)(struct position_orientation_update_packet);
 void (*classic_on_position_update)(struct position_update_packet);
 void (*classic_on_orientation_update)(struct orientation_update_packet);
-void (*classic_on_message)(struct message_packet);
 void (*classic_on_despawn)(struct despawn_packet);
+void (*classic_on_message)(struct message_packet);
+void (*classic_on_disconnect)(struct disconnect_packet);
 
 void classic_protocol_initialize(struct protocol* proto)
 {
@@ -71,12 +72,13 @@ void opcode_handle_server_id(struct stream_buffer* stream)
 
 void opcode_handle_ping(struct stream_buffer* stream)
 {
-
+	(void)stream; // unused variable
 }
 
 void opcode_handle_level_init(struct stream_buffer* stream)
 {
-	printf("got level init\n");
+	(void)stream; // unused variable
+	
 	map_buffer_compressed = NULL;
 	map_buffer_compressed_size = 0;
 }
@@ -130,10 +132,6 @@ void opcode_handle_level_final(struct stream_buffer* stream)
 	printf("map buffer size: %d\n", (int)map_buffer_size);
 	
 	free(map_buffer_compressed);
-	
-	FILE* fp = fopen("map_buffer.dat", "wb");
-	fwrite(map_buffer, sizeof(uint8_t), map_buffer_size, fp);
-	fclose(fp);
 	
 	struct level_finalized_packet packet;
 	
@@ -282,11 +280,16 @@ void opcode_handle_message(struct stream_buffer* stream)
 
 void opcode_handle_disconnect(struct stream_buffer* stream)
 {
-	printf("got disconnect\n");
-	exit(1);
+	struct disconnect_packet packet;
+	
+	stream_read_uint8(stream, NULL); // skip opcode
+	stream_read_string64(stream, (char*)&packet.reason);
+	
+	if (classic_on_disconnect != NULL)
+		classic_on_disconnect(packet);
 }
 
 void opcode_handle_user_type(struct stream_buffer* stream)
 {
-	printf("got user_type\n");
+	(void)stream; // unused variable
 }
